@@ -1,0 +1,15 @@
+search_task:
+    description: >
+        Search for the most relevant products about the user query: {query}.
+        Make sure you find the most accurate and relevant information available.
+    expected_output: >
+        A list with dictionaries of the most relevant products about {query}
+    agent: search_agent
+
+response_task:
+    description: >
+        Using the context provided. Respond to the user query: {query}.
+        Make sure you find the most accurate and relevant information available.
+    expected_output: >
+        A dictionary containing string `summary` along with `products` which is a list of product dictionaries as response to the user query: {query}.
+    agent: product_agent
