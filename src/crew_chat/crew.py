@@ -10,6 +10,7 @@ from typing import Dict, List
 from pydantic import BaseModel, Field
 
 load_dotenv(override=True)
+os.environ["OTEL_SDK_DISABLED"] = "true"
 
 llm = LLM(
     model=f"azure/{os.getenv('model')}",

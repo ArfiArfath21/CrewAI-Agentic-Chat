@@ -12,6 +12,11 @@ First, if you haven't already, install uv:
 pip install uv
 ```
 
+Set/Add the following entry in `/etc/hosts` to avoid the telemetry connection issue:
+```txt
+127.0.0.1       telemetry.crewai.com
+```
+
 Next, navigate to your project directory and install the dependencies:
 
 (Optional) Lock the dependencies and install them by using the CLI command:
