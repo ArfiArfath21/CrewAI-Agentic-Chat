@@ -25,7 +25,7 @@ uv add weaviate-client crewai[tools] fastapi uvicorn rich
 cd src
 ```
 
-> Note: The current code expects a 'Products' collection in the local Weaviate instance.
+> Note: The current code expects a 'Products' collection in the local Weaviate instance. Refer to the [Weaviate-RAG](https://github.com/ArfiArfath21/Weaviate-RAG) repository for further instructions on how to setup the Weaviate instance and collection.
 
 Now, kickstart your crew of AI agents and begin task execution, run this from the root folder of your project:
 ```bash
