@@ -535,12 +535,16 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "crewai", extra = ["tools"] },
+    { name = "fastapi" },
+    { name = "uvicorn" },
     { name = "weaviate-client" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "crewai", extras = ["tools"], specifier = ">=0.102.0,<1.0.0" },
+    { name = "fastapi", specifier = ">=0.115.11" },
+    { name = "uvicorn", specifier = ">=0.34.0" },
     { name = "weaviate-client", specifier = ">=4.11.1" },
 ]
 

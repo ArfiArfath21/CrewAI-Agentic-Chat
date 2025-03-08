@@ -1,12 +1,20 @@
 #!/usr/bin/env python
 import sys
 import warnings
+import json
 
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
 from datetime import datetime
+from rich.traceback import install as rich_install
 
-from crew_chat.crew import CrewChat
+from crew import CrewChat
 
+rich_install()
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
+
+
+# warnings.filterwarnings("ignore", category=ResourceWarning)
 
 # This main file is intended to be a way for you to run your
 # crew locally, so refrain from adding unnecessary logic into this file.
@@ -21,16 +29,10 @@ def run():
         'query': 'Samsung Galaxy Smart Phone',
         'current_year': str(datetime.now().year)
     }
-    
-    try:
-        crew = CrewChat().crew()
-        results = crew.kickoff(inputs=inputs)
-        print(">>>>>>>>>>>>>>>>. FINAL RESULTS <<<<<<<<<<<<<<<<<<")
-        print(results)
-    except Exception as e:
-        results = {}
-        raise Exception(f"An error occurred while running the crew: {e}")
-    return results
+    results = CrewChat().crew().kickoff(inputs=inputs)
+    print("\n>>>>>>>>>>>>>>>>. FINAL RESULTS <<<<<<<<<<<<<<<<<<")
+    print(results)
+
 
 def train():
     """
@@ -45,6 +47,7 @@ def train():
     except Exception as e:
         raise Exception(f"An error occurred while training the crew: {e}")
 
+
 def replay():
     """
     Replay the crew execution from a specific task.
@@ -54,8 +57,6 @@ def replay():
 
     except Exception as e:
         raise Exception(f"An error occurred while replaying the crew: {e}")
-
-
 
 
 def test():
@@ -73,3 +74,34 @@ def test():
 
     except Exception as e:
         raise Exception(f"An error occurred while testing the crew: {e}")
+
+
+app = FastAPI()
+crew_chat = CrewChat()
+crew = crew_chat.crew()
+
+
+class QueryInput(BaseModel):
+    query: str
+
+
+@app.post("/chat")
+async def chat(input_data: QueryInput):
+    try:
+        inputs = {
+            'query': input_data.query,
+            'current_year': str(datetime.now().year)
+        }
+
+        results = crew.kickoff(inputs=inputs)
+        print(results)
+        results = json.loads(results.raw)
+        return {"results": results}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -4,8 +4,7 @@ import json
 from dotenv import load_dotenv
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
-
-from crew_chat.tools.weaviate_tool import create_weaviate_tool
+from tools.weaviate_tool import create_weaviate_tool
 from typing import Dict, List
 from pydantic import BaseModel, Field
 

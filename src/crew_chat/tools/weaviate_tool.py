@@ -53,16 +53,20 @@ def query_run(query: str, count: int) -> List[Dict]:
     # TODO: Switch to a real/stable Weaviate client
     print("Fetching products for query: ", query)
     print("Number of products to return: ", count)
-
-    client = weaviate_client()
-    collections = client.collections.list_all()
-    print(collections.keys())
-
-    collection = client.collections.get("Products")
-    response = hybrid_query(collection, query, limit=3, score=False)
-
-    client.close()
-    return [{o.uuid: o.properties} for o in response.objects]
+    client = None
+    try:
+        client = weaviate_client()
+        collections = client.collections.list_all()
+        print(collections.keys())
+        collection = client.collections.get("Products")
+        response = hybrid_query(collection, query, limit=3, score=False)
+        return [{o.uuid: o.properties} for o in response.objects]
+    except Exception as e:
+        print("An error occurred while querying Weaviate: ", e)
+        return [{}]
+    finally:
+        if client:
+            client.close()
 
 
 def create_weaviate_tool():
